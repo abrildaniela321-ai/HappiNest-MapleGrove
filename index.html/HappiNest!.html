@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HappiNest • Guest Guidebook</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nest: {
+                            warmCream: '#FFFDF9',
+                            softBeige: '#F5EFE6',
+                            terracotta: '#D97757',
+                            sage: '#8A9A86',
+                            charcoal: '#2D2B2A',
+                            warmGray: '#78716C',
+                            glassWhite: 'rgba(255, 255, 255, 0.45)',
+                            glassBorder: 'rgba(255, 255, 255, 0.6)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    },
+                    boxShadow: {
+                        'liquid': '0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.8)',
+                        'glow': '0 0 25px rgba(217, 119, 87, 0.25)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Canvas Confetti CDN for Checklist completion celebration -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* Liquid Glass UI Core Styling */
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #F5EFE6;
+            color: #2D2B2A;
+        }
+
+        .maple-bg {
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(255, 248, 240, 0.85), rgba(245, 239, 230, 0.7)),
+                url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .liquid-card {
+            background: rgba(255, 255, 255, 0.52);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            box-shadow: 
+                0 15px 35px -5px rgba(0, 0, 0, 0.05),
+                inset 0 1px 2px 0 rgba(255, 255, 255, 0.9),
+                inset 0 -1px 2px 0 rgba(0, 0, 0, 0.03);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .liquid-pill {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03), inset 0 1px 1px rgba(255, 255, 255, 1);
+        }
+
+        .liquid-tab-active {
+            background: rgba(217, 119, 87, 0.9) !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 8px 20px rgba(217, 119, 87, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+        }
+
+        /* Ambient Fluid Blobs */
+        .blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(70px);
+            z-index: 0;
+            opacity: 0.6;
+            pointer-events: none;
+            animation: float 14s infinite ease-in-out alternate;
+        }
+        .blob-1 { top: -5%; left: 10%; width: 350px; height: 350px; background: #FED7AA; }
+        .blob-2 { bottom: 10%; right: 5%; width: 400px; height: 400px; background: #D97757; opacity: 0.25; animation-delay: -5s; }
+        .blob-3 {

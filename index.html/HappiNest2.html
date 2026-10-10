@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HappiNest — Relax • Unwind • Feel at Home</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- QRCode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nest: {
+                            sand: '#FAF8F5',
+                            terracotta: '#E07A5F',
+                            terracottaDark: '#C86248',
+                            sage: '#81B29A',
+                            gold: '#F2CC8F',
+                            charcoal: '#212529',
+                            warmGray: '#6C757D',
+                            cream: '#F4F1DE'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'liquid': '0 20px 50px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.9), inset 0 -1px 2px rgba(0, 0, 0, 0.04)',
+                        'liquid-hover': '0 25px 60px rgba(224, 122, 95, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.95)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            color: #212529;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-color: #1a202c;
+        }
+
+        /* Glassmorphism Liquid Card Styling */
+        .liquid-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(28px) saturate(200%);
+            -webkit-backdrop-filter: blur(28px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+            border-right: 1px solid rgba(255, 255, 255, 0.45);
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.08), 
+                        inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
+        }
+
+        .liquid-pill {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .liquid-pill:hover {
+            background: rgba(255, 255, 255, 0.92);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 25px -5px rgba(224, 122, 95, 0.2);
+        }
+
+        .liquid-pill.active-nav {
+            background: rgba(224, 122, 95, 0.95);
+            color: #FFFFFF !important;
+            border-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 25px rgba(224, 122, 95, 0.35);
+        }
+
+        /* Ambient Blob Animations */
+        @keyframes liquidMove1 {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(50px, -70px) scale(1.12); }
+            66% { transform: translate(-40px, 40px) scale(0.92); }
+        }
+        @keyframes liquidMove2 {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(-60px, 50px) scale(1.1); }
+            66% { transform: translate(50px, -50px) scale(0.95); }
+        }
+
+        .blob-1 { animation: liquidMove1 22s ease-in-out infinite; }
+        .blob-2 { animation: liquidMove2 26s ease-in-out infinite; }
+
+        /* Page View Switch Transitions */
+        .page-view {
+            display: none;
+            opacity: 0;
+            transform: translateY(12px) scale(0.99);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+        .page-view.active-page {
+            display: block;
+            opacity: 1;
+            transform: translateY(0px) scale(1);
+        }
+
+        /* Toast Container */
+        #toast {
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen text-nest-charcoal antialiased flex flex-col justify-between selection:bg-nest-terracotta selection:text-white pb-24">
+
+    <!-- Soft Maple Grove Background Image with Gradient Overlay -->
+    <div class="fixed inset-0 pointer-events-none -z-20 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1920&q=80" 
+             alt="Maple Grove Soft Scenery" 
+             class="w-full h-full object-cover object-center filter blur-md scale-105 opacity-40 mix-blend-overlay">
+        <div class="absolute inset-0 bg-gradient-to-b from-stone-200/80 via-amber-50/70 to-stone-100/90"></div>
+    </div>
+
+    <!-- Soft Animated Ambient Blobs -->
+    <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+        <div class="blob-1 absolute top-[-5%] left-[-10%] w-[550px] h-[550px] rounded-full bg-gradient-to-tr from-amber-200/40 via-rose-200/30 to-orange-100/20 blur-3xl"></div>
+        <div class="blob-2 absolute top-[35%] right-[-10%] w-[600px] h-[600px] rounded-full bg-gradient-to-br from-emerald-100/40 via-teal-100/30 to-sky-100/20 blur-3xl"></div>
+        <div class="blob-1 absolute bottom-[-10%] left-[15%] w-[500px] h-[500px] rounded-full bg-gradient-to-r from-amber-100/50 via-yellow-100/30 to-orange-100/40 blur-3xl"></div>
+    </div>
+
+    <!-- Header Navbar -->
+    <header class="sticky top-4 z-40 px-4 max-w-4xl mx-auto w-full">
+        <div class="liquid-card rounded-3xl p-3 sm:px-6 sm:py-3.5 flex items-center justify-between shadow-liquid">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-nest-terracotta to-nest-gold p-0.5 shadow-md flex items-center justify-center">
+                    <div class="w-full h-full bg-white/90 rounded-[14px] flex items-center justify-center text-lg">
+                        🪹
+                    </div>
+                </div>
+                <div>
+                    <span class="text-[10px] font-bold text-nest-terracotta tracking-widest uppercase block leading-none mb-1">
+                        Relax • Unwind • Feel at Home
+                    </span>
+                    <h1 class="font-serif font-bold text-2xl leading-none tracking-tight text-nest-charcoal">HappiNest</h1>
+                </div>
+            </div>
+
+            <!-- Wi-Fi Quick Copy Pill -->
+            <div class="flex items-center space-x-2">
+                <button onclick="copyToClipboard('HappiNest@home11', 'Wi-Fi Password Copied!')" class="liquid-pill px-3.5 py-1.5 rounded-full text-xs font-semibold text-nest-charcoal flex items-center space-x-2 border border-white/80">
+                    <i data-lucide="wifi" class="w-3.5 h-3.5 text-nest-terracotta"></i>
+                    <span class="hidden sm:inline">Wi-Fi:</span>
+                    <span class="text-nest-terracotta font-bold">HappiNest</span>
+                </button>
+                <button onclick="openQrModal()" class="liquid-pill p-2 rounded-full text-nest-charcoal hover:text-nest-terracotta" title="Show Wi-Fi QR Code">
+                    <i data-lucide="qr-code" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl mx-auto px-4 py-6 w-full flex-grow">
+
+        <!-- ================= PAGE 1: HOME DASHBOARD ================= -->
+        <section id="page-home" class="page-view active-page space-y-6">
+            
+            <!-- Hero Card -->
+            <div class="liquid-card rounded-3xl p-6 sm:p-10 relative overflow-hidden shadow-liquid">
+                <div class="absolute -right-8 -bottom-8 text-9xl opacity-10 pointer-events-none select-none">🏡</div>
+                <div class="space-y-4 max-w-xl">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-nest-terracotta/15 text-nest-terracotta text-xs font-semibold border border-nest-terracotta/20">
+                        <span class="w-2 h-2 rounded-full bg-nest-terracotta animate-pulse"></span>
+                        <span>Welcome to HappiNest</span>
+                    </div>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold leading-tight text-nest-charcoal">
+                        Your warm, cozy & elegant retreat.
+                    </h2>
+                    <p class="text-nest-warmGray text-sm sm:text-base leading-relaxed">
+                        Nestled in Maple Grove, Cavite. Enjoy high-speed Wi-Fi, nearby popular eats, house rules, and direct social messaging during your stay.
+                    </p>
+
+                    <!-- Nav Grid Shortcuts -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                        <button onclick="switchTab('wifi')" class="liquid-card p-3.5 rounded-2xl text-left hover:border-nest-terracotta transition group">
+                            <i data-lucide="wifi" class="w-5 h-5 text-nest-terracotta mb-1 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs font-bold block text-nest-charcoal">Wi-Fi Info</span>
+                            <span class="text-[10px] text-nest-warmGray">Fast & Free</span>
+                        </button>
+                        <button onclick="switchTab('rules')" class="liquid-card p-3.5 rounded-2xl text-left hover:border-nest-sage transition group">
+                            <i data-lucide="shield-check" class="w-5 h-5 text-nest-sage mb-1 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs font-bold block text-nest-charcoal">House Rules</span>
+                            <span class="text-[10px] text-nest-warmGray">Checklist & Policies</span>
+                        </button>
+                        <button onclick="switchTab('nearby')" class="liquid-card p-3.5 rounded-2xl text-left hover:border-nest-gold transition group">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-amber-500 mb-1 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs font-bold block text-nest-charcoal">Nearby Spots</span>
+                            <span class="text-[10px] text-nest-warmGray">Maple Grove Eats</span>
+                        </button>
+                        <button onclick="switchTab('contact')" class="liquid-card p-3.5 rounded-2xl text-left hover:border-sky-400 transition group">
+                            <i data-lucide="message-circle" class="w-5 h-5 text-sky-500 mb-1 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs font-bold block text-nest-charcoal">Contact Us</span>
+                            <span class="text-[10px] text-nest-warmGray">Socials & Messaging</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Specs Badges -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div class="liquid-card p-4 rounded-2xl text-center space-y-1">
+                    <i data-lucide="clock" class="w-4 h-4 text-nest-terracotta mx-auto"></i>
+                    <span class="text-[10px] uppercase font-bold text-nest-warmGray block">Check-in</span>
+                    <span class="text-sm font-bold text-nest-charcoal">3:00 PM</span>
+                </div>
+                <div class="liquid-card p-4 rounded-2xl text-center space-y-1">
+                    <i data-lucide="log-out" class="w-4 h-4 text-nest-terracotta mx-auto"></i>
+                    <span class="text-[10px] uppercase font-bold text-nest-warmGray block">Check-out</span>
+                    <span class="text-sm font-bold text-nest-charcoal">Strictly 2:00 PM</span>
+                </div>
+                <div class="liquid-card p-4 rounded-2xl text-center space-y-1">
+                    <i data-lucide="moon" class="w-4 h-4 text-indigo-500 mx-auto"></i>
+                    <span class="text-[10px] uppercase font-bold text-nest-warmGray block">Quiet Hours</span>
+                    <span class="text-sm font-bold text-nest-charcoal">10 PM - 8 AM</span>
+                </div>
+                <div class="liquid-card p-4 rounded-2xl text-center space-y-1 border-rose-500/30">
+                    <i data-lucide="ban" class="w-4 h-4 text-rose-500 mx-auto"></i>
+                    <span class="text-[10px] uppercase font-bold text-nest-warmGray block">Pets Policy</span>
+                    <span class="text-sm font-bold text-rose-600">Strictly No Pets</span>
+                </div>
+            </div>
+
+            <!-- Social Banner Callout -->
+            <div class="liquid-card rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-2xl bg-nest-terracotta/20 text-nest-terracotta flex items-center justify-center text-xl shrink-0">
+                        📱
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm text-nest-charcoal">Stay Connected with HappiNest</h4>
+                        <p class="text-xs text-nest-warmGray">Follow our social channels or reach out directly anytime.</p>
+                    </div>
+                </div>
+                <button onclick="switchTab('contact')" class="liquid-pill px-5 py-2.5 rounded-full text-xs font-bold text-nest-charcoal hover:text-nest-terracotta shrink-0 border border-white">
+                    View Socials ↗
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2: WI-FI ACCESS ================= -->
+        <section id="page-wifi" class="page-view space-y-6">
+            <div class="liquid-card rounded-3xl p-6 sm:p-8 shadow-liquid space-y-6">
+                <div class="flex items-center justify-between border-b border-black/5 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-2xl bg-nest-terracotta/15 text-nest-terracotta flex items-center justify-center text-2xl shrink-0">
+                            📶
+                        </div>
+                        <div>
+                            <h2 class="font-serif font-bold text-2xl text-nest-charcoal">High-Speed Wi-Fi</h2>
+                            <p class="text-xs text-nest-warmGray">Tap any field to copy instantly to clipboard</p>
+                        </div>
+                    </div>
+                    <button onclick="openQrModal()" class="liquid-pill px-3.5 py-2 rounded-full text-xs font-bold text-nest-charcoal flex items-center space-x-2 border border-white">
+                        <i data-lucide="qr-code" class="w-4 h-4 text-nest-terracotta"></i>
+                        <span>Show QR Code</span>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Network Name -->
+                    <div class="bg-white/70 rounded-2xl p-5 flex items-center justify-between border border-white shadow-sm">
+                        <div>
+                            <span class="text-[10px] font-bold text-nest-warmGray uppercase tracking-wider block mb-0.5">Network Name</span>
+                            <span class="font-serif font-bold text-2xl text-nest-charcoal">HappiNest</span>
+                        </div>
+                        <button onclick="copyToClipboard('HappiNest', 'Network Name Copied!')" class="liquid-pill p-3 rounded-xl text-nest-warmGray hover:text-nest-terracotta" title="Copy Network">
+                            <i data-lucide="copy" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="bg-white/70 rounded-2xl p-5 flex items-center justify-between border border-white shadow-sm">
+                        <div>
+                            <span class="text-[10px] font-bold text-nest-warmGray uppercase tracking-wider block mb-0.5">Password</span>
+                            <span id="passwordText" class="font-mono font-bold text-xl text-nest-terracotta">HappiNest@home11</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <button onclick="togglePasswordVisibility()" class="liquid-pill p-2.5 rounded-xl text-nest-warmGray hover:text-nest-charcoal" title="Toggle Show/Hide">
+                                <i id="passEyeIcon" data-lucide="eye-off" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="copyToClipboard('HappiNest@home11', 'Password Copied!')" class="liquid-pill px-3.5 py-2 rounded-xl text-xs font-bold text-nest-charcoal border border-nest-terracotta/30 hover:bg-nest-terracotta hover:text-white transition">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-200/50 text-xs text-nest-warmGray flex items-center space-x-3">
+                    <span class="text-lg">💡</span>
+                    <span>Having trouble connecting? Try restarting your phone's Wi-Fi or scan the QR code above directly with your smartphone camera.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 3: HOUSE RULES & CHECKOUT ================= -->
+        <section id="page-rules" class="page-view space-y-6">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h2 class="font-serif text-3xl font-bold text-nest-charcoal">House Rules & Care</h2>
+                    <p class="text-xs text-nest-warmGray mt-0.5">Please review our rules to help us keep HappiNest pleasant for everyone.</p>
+                </div>
+                <span class="px-3.5 py-1.5 bg-rose-500/15 text-rose-600 rounded-full text-xs font-bold border border-rose-500/30 flex items-center space-x-1.5 self-start sm:self-auto">
+                    <i data-lucide="ban" class="w-4 h-4"></i>
+                    <span>Strictly NO PETS Allowed</span>
+                </span>
+            </div>
+
+            <!-- Rules Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <!-- Rule 1: No Pets -->
+                <div class="liquid-card rounded-3xl p-5 space-y-3 border-rose-500/30 bg-rose-50/20">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-2xl bg-rose-500/15 text-rose-600 flex items-center justify-center text-xl shrink-0">
+                            🐾
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-nest-charcoal">Strictly No Pets Allowed</h3>
+                            <p class="text-xs text-rose-600/80 font-medium">Allergen-Free Environment</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-nest-warmGray leading-relaxed bg-white/50 p-3 rounded-2xl">
+                        To keep the space hypoallergenic and clean for all incoming guests, pets are strictly prohibited inside the unit.
+                    </p>
+                </div>
+
+                <!-- Rule 2: Check-In/Out -->
+                <div class="liquid-card rounded-3xl p-5 space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-2xl bg-nest-terracotta/15 text-nest-terracotta flex items-center justify-center text-xl shrink-0">
+                            ⏰
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-nest-charcoal">Check-In & Check-Out</h3>
+                            <p class="text-xs text-nest-warmGray">Check-in 3 PM | Check-out 2 PM</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-nest-warmGray leading-relaxed bg-white/50 p-3 rounded-2xl">
+                        Check-in is at 3:00 PM. Check-out is strictly at 2:00 PM so our cleaning team can prepare for the next guests.
+                    </p>
+                </div>
+
+                <!-- Rule 3: Quiet Hours -->
+                <div class="liquid-card rounded-3xl p-5 space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-2xl bg-indigo-500/15 text-indigo-500 flex items-center justify-center text-xl shrink-0">
+                            🌙
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-nest-charcoal">Quiet Hours</h3>
+                            <p class="text-xs text-nest-warmGray">10:00 PM – 8:00 AM</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-nest-warmGray leading-relaxed bg-white/50 p-3 rounded-2xl">
+                        Please keep noise levels low during night hours out of respect for neighbors.
+                    </p>
+                </div>
+
+                <!-- Rule 4: No Smoking & No Parties -->
+                <div class="liquid-card rounded-3xl p-5 space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-600 flex items-center justify-center text-xl shrink-0">
+                            🚭
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-nest-charcoal">No Smoking & No Parties</h3>
+                            <p class="text-xs text-nest-warmGray">Indoor Prohibited</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-nest-warmGray leading-relaxed bg-white/50 p-3 rounded-2xl">
+                        Smoking/vaping inside and large noisy parties are strictly prohibited on the property.
+                    </p>
+                </div>
+
+                <!-- Rule 5: Shoes Off Policy -->
+                <div class="liquid-card rounded-3xl p-5 space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-2xl bg-nest-sage/20 text-nest-sage flex items-center justify-center text-xl shrink-0">
+                            👟
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-nest-charcoal">Shoes Off Policy</h3>
+                            <p class="text-xs text-nest-warmGray">Keep Floors Clean</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-nest-warmGray leading-relaxed bg-white/50 p-3 rounded-2xl">
+                        Please leave outdoor footwear at the entry shoe area upon entering HappiNest.
+                    </p>
+                </div>
+
+                <!-- Rule 6: Energy & Kitchen Use -->
+                <div class="liquid-card rounded-3xl p-5 space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-2xl bg-amber-400/20 text-amber-600 flex items-center justify-center text-xl shrink-0">
+                            🍳
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-nest-charcoal">Kitchen & Utilities</h3>
+                            <p class="text-xs text-nest-warmGray">Turn off AC when going out</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-nest-warmGray leading-relaxed bg-white/50 p-3 rounded-2xl">
+                        You are welcome to use cookware! Please wash dishes after use and switch off AC units when stepping out.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Interactive Check-Out Checklist Card -->
+            <div class="liquid-card rounded-3xl p-6 sm:p-8 shadow-liquid space-y-5 pt-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-black/5 pb-4">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-2xl">🚪</span>
+                            <h3 class="font-serif text-2xl font-bold text-nest-charcoal">Check-Out Checklist</h3>
+                        </div>
+                        <p class="text-xs text-nest-warmGray mt-1">Complete this quick list before departure at 2:00 PM</p>
+                    </div>
+                    <span id="progressBadge" class="text-xs font-bold text-nest-terracotta bg-nest-terracotta/10 px-3 py-1.5 rounded-full border border-nest-terracotta/20 self-start sm:self-auto">
+                        0 of 5 Steps Completed
+                    </span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-black/5 rounded-full h-3 overflow-hidden p-0.5 border border-white">
+                    <div id="progressBar" class="bg-gradient-to-r from-nest-terracotta to-nest-sage h-full w-0 transition-all duration-500 rounded-full"></div>
+                </div>
+
+                <!-- Interactive Checklist Items -->
+                <div class="space-y-3">
+                    <label class="flex items-start space-x-3.5 p-4 bg-white/60 hover:bg-white rounded-2xl cursor-pointer border border-white transition-all shadow-sm">
+                        <input type="checkbox" onchange="updateChecklist()" class="checkout-check mt-1 w-4 h-4 rounded text-nest-sage accent-nest-sage cursor-pointer">
+                        <div>
+                            <span class="font-bold text-nest-charcoal block text-sm">Check-Out Time (2:00 PM strictly)</span>
+                            <span class="text-xs text-nest-warmGray">Pack personal luggage and prepare to vacate before 2:00 PM.</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start space-x-3.5 p-4 bg-white/60 hover:bg-white rounded-2xl cursor-pointer border border-white transition-all shadow-sm">
+                        <input type="checkbox" onchange="updateChecklist()" class="checkout-check mt-1 w-4 h-4 rounded text-nest-sage accent-nest-sage cursor-pointer">
+                        <div>
+                            <span class="font-bold text-nest-charcoal block text-sm">Trash & Waste Disposal</span>
+                            <span class="text-xs text-nest-warmGray">Please gather trash into the bins under the sink or outside.</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start space-x-3.5 p-4 bg-white/60 hover:bg-white rounded-2xl cursor-pointer border border-white transition-all shadow-sm">
+                        <input type="checkbox" onchange="updateChecklist()" class="checkout-check mt-1 w-4 h-4 rounded text-nest-sage accent-nest-sage cursor-pointer">
+                        <div>
+                            <span class="font-bold text-nest-charcoal block text-sm">Dishes & Utensils</span>
+                            <span class="text-xs text-nest-warmGray">Wash used cookware and dishes, or leave them neatly in the drying rack.</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start space-x-3.5 p-4 bg-white/60 hover:bg-white rounded-2xl cursor-pointer border border-white transition-all shadow-sm">
+                        <input type="checkbox" onchange="updateChecklist()" class="checkout-check mt-1 w-4 h-4 rounded text-nest-sage accent-nest-sage cursor-pointer">
+                        <div>
+                            <span class="font-bold text-nest-charcoal block text-sm">Appliances, AC & Lights OFF</span>
+                            <span class="text-xs text-nest-warmGray">Turn off all air conditioners, appliances, and indoor lights.</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start space-x-3.5 p-4 bg-white/60 hover:bg-white rounded-2xl cursor-pointer border border-white transition-all shadow-sm">
+                        <input type="checkbox" onchange="updateChecklist()" class="checkout-check mt-1 w-4 h-4 rounded text-nest-sage accent-nest-sage cursor-pointer">
+                        <div>
+                            <span class="font-bold text-nest-charcoal block text-sm">Lock Doors & Return Keys</span>
+                            <span class="text-xs text-nest-warmGray">Lock all windows and front door, leaving keys in the lockbox or designated spot.</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div id="completionBanner" class="hidden p-6 rounded-3xl bg-nest-sage/20 border border-nest-sage/40 text-center space-y-2">
+                    <span class="text-4xl block">💖</span>
+                    <h4 class="font-serif font-bold text-nest-charcoal text-xl">Thank You for Staying at HappiNest!</h4>
+                    <p class="text-xs text-nest-warmGray max-w-md mx-auto leading-relaxed">
+                        We hope you enjoyed your time with us! Have a safe journey home.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 4: NEARBY SPOTS ================= -->
+        <section id="page-nearby" class="page-view space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h2 class="font-serif text-3xl font-bold text-nest-charcoal">Nearby Spots & Dining</h2>
+                    <p class="text-xs text-nest-warmGray mt-0.5">Popular cafes, 24/7 food, and night markets near HappiNest, Maple Grove.</p>
+                </div>
+                <!-- Search Box -->
+                <div class="relative w-full sm:w-64">
+                    <i data-lucide="search" class="w-4 h-4 text-nest-warmGray absolute left-3 top-1/2 -translate-y-1/2"></i>
+                    <input type="text" id="spotSearchInput" onkeyup="filterSpots()" placeholder="Search coffee, burgers, 24/7..." class="w-full pl-9 pr-4 py-2 bg-white/70 focus:bg-white rounded-full text-xs border border-white focus:outline-none focus:ring-2 focus:ring-nest-terracotta/50 transition shadow-sm">
+                </div>
+            </div>
+
+            <!-- Category Filter Chips -->
+            <div class="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none">
+                <button onclick="filterCategory('all')" class="category-chip active-chip liquid-pill px-4 py-1.5 rounded-full text-xs font-bold shrink-0 text-nest-charcoal">All Spots</button>
+                <button onclick="filterCategory('coffee')" class="category-chip liquid-pill px-4 py-1.5 rounded-full text-xs font-bold shrink-0 text-nest-warmGray">☕ Coffee & Cafes</button>
+                <button onclick="filterCategory('dining')" class="category-chip liquid-pill px-4 py-1.5 rounded-full text-xs font-bold shrink-0 text-nest-warmGray">🍔 Fast Food & Eats</button>
+                <button onclick="filterCategory('night')" class="category-chip liquid-pill px-4 py-1.5 rounded-full text-xs font-bold shrink-0 text-nest-warmGray">🌙 Night Market & Bars</button>
+                <button onclick="filterCategory('convenience')" class="category-chip liquid-pill px-4 py-1.5 rounded-full text-xs font-bold shrink-0 text-nest-warmGray">🛒 Convenience</button>
+            </div>
+
+            <!-- Spots Grid -->
+            <div id="spotsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                
+                <!-- 1. McDonald's -->
+                <div class="spot-card liquid-card p-5 rounded-3xl space-y-3 flex flex-col justify-between" data-category="dining" data-name="mcdonalds mcdonald's fast food 24 hours burgers">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-3xl">🍟</span>
+                            <span class="px-2.5 py-0.5 bg-amber-500/15 text-amber-700 rounded-full text-[10px] font-bold">24 Hours</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-nest-charcoal">McDonald's</h3>
+                        <p class="text-xs text-nest-warmGray">24/7 burgers, fries, breakfast & drive-thru.</p>
+                    </div>
+                    <div class="pt-2 border-t border-black/5 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-nest-charcoal flex items-center">
+                            <i data-lucide="footprints" class="w-3.5 h-3.5 text-nest-terracotta mr-1"></i> ~3 mins walk
+                        </span>
+                        <a href="https://www.google.com/maps/search/McDonald's+Maple+Grove" target="_blank" class="liquid-pill px-3 py-1.5 rounded-xl text-xs font-bold text-nest-charcoal hover:text-nest-terracotta border border-white">
+                            Directions ↗
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 2. Starbucks -->
+                <div class="spot-card liquid-card p-5 rounded-3xl space-y-3 flex flex-col justify-between" data-category="coffee" data-name="starbucks coffee cafe drinks frappe">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-3xl">☕</span>
+                            <span class="px-2.5 py-0.5 bg-emerald-500/15 text-emerald-700 rounded-full text-[10px] font-bold">Cafe</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-nest-charcoal">Starbucks</h3>
+                        <p class="text-xs text-nest-warmGray">Signature espresso drinks, pastries & cozy Wi-Fi atmosphere.</p>
+                    </div>
+                    <div class="pt-2 border-t border-black/5 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-nest-charcoal flex items-center">
+                            <i data-lucide="footprints" class="w-3.5 h-3.5 text-nest-terracotta mr-1"></i> ~4 mins walk
+                        </span>
+                        <a href="https://www.google.com/maps/search/Starbucks+Maple+Grove" target="_blank" class="liquid-pill px-3 py-1.5 rounded-xl text-xs font-bold text-nest-charcoal hover:text-nest-terracotta border border-white">
+                            Directions ↗
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 3. Pick-Up Coffee -->
+                <div class="spot-card liquid-card p-5 rounded-3xl space-y-3 flex flex-col justify-between" data-category="coffee" data-name="pick-up coffee pickup coffee quick grab latte">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-3xl">🥤</span>
+                            <span class="px-2.5 py-0.5 bg-sky-500/15 text-sky-700 rounded-full text-[10px] font-bold">Quick Grab</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-nest-charcoal">Pick-Up Coffee</h3>
+                        <p class="text-xs text-nest-warmGray">Budget-friendly iced lattes, americanos & matcha brews.</p>
+                    </div>
+                    <div class="pt-2 border-t border-black/5 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-nest-charcoal flex items-center">
+                            <i data-lucide="footprints" class="w-3.5 h-3.5 text-nest-terracotta mr-1"></i> ~2 mins walk
+                        </span>
+                        <a href="https://www.google.com/maps/search/Pick-Up+Coffee" target="_blank" class="liquid-pill px-3 py-1.5 rounded-xl text-xs font-bold text-nest-charcoal hover:text-nest-terracotta border border-white">
+                            Directions ↗
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 4. But First, Coffee (BFC) -->
+                <div class="spot-card liquid-card p-5 rounded-3xl space-y-3 flex flex-col justify-between" data-category="coffee" data-name="but first coffee bfc spanish latte local">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-3xl">🤎</span>
+                            <span class="px-2.5 py-0.5 bg-amber-700/15 text-amber-800 rounded-full text-[10px] font-bold">Local Brew</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-nest-charcoal">But First, Coffee (BFC)</h3>
+                        <p class="text-xs text-nest-warmGray">Famous Spanish lattes, drip coffee & iced espresso.</p>
+                    </div>
+                    <div class="pt-2 border-t border-black/5 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-nest-charcoal flex items-center">
+                            <i data-lucide="footprints" class="w-3.5 h-3.5 text-nest-terracotta mr-1"></i> ~4 mins walk
+                        </span>
+                        <a href="https://www.google.com/maps/search/But+First+Coffee" target="_blank" class="liquid-pill px-3 py-1.5 rounded-xl text-xs font-bold text-nest-charcoal hover:text-nest-terracotta border border-white">
+                            Directions ↗
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 5. Dunkin' Donuts -->
+                <div class="spot-card liquid-card p-5 rounded-3xl space-y-3 flex flex-col justify-between" data-category="coffee dining" data-name="dunkin donuts coffee munchkins pastries">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-3xl">🍩</span>
+                            <span class="px-2.5 py-0.5 bg-rose-500/15 text-rose-700 rounded-full text-[10px] font-bold">Donuts & Coffee</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-nest-charcoal">Dunkin' Donuts</h3>
+                        <p class="text-xs text-nest-warmGray">Fresh donuts, munchkins, bunwiches & iced coffees.</p>
+                    </div>
+                    <div class="pt-2 border-t border-black/5 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-nest-charcoal flex items-center">
+                            <i data-lucide="footprints" class="w-3.5 h-3.5 text-nest-terracotta mr-1"></i> ~3 mins walk
+                        </span>
+                        <a href="https://www.google.com/maps/search/Dunkin+Donuts" target="_blank" class="liquid-pill px-3 py-1.5 rounded-xl text-xs font-bold text-nest-charcoal hover:text-nest-terracotta border border-white">
+                            Directions ↗
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 6. 7-Eleven -->
+                <div class="spot-card liquid-card p-5 rounded-3xl space-y-3 flex flex-col justify-between" data-category="convenience" data-name="7-eleven 7 eleven convenience store snacks 24/7 drinks">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-3xl">🛒</span>
+                            <span class="px-2.5 py-0.5 bg-emerald-500/15 text-emerald-700 rounded-full text-[10px] font-bold">24/7 Store</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-nest-charcoal">7-Eleven</h3>
+                        <p class="text-xs text-nest-warmGray">24-hour convenience store for snacks, ice, water & essentials.</p>
+                    </div>
+                    <div class="pt-2 border-t border-black/5 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-nest-charcoal flex items-center">
+                            <i data-lucide="footprints" class="w-3.5 h-3.5 text-nest-terracotta mr-1"></i> ~1 min walk
+                        </span>
+                        <a href="https://www.google.com/maps/search/7-Eleven" target="_blank" class="liquid-pill px-3 py-1.5 rounded-xl text-xs font-bold text-nest-charcoal hover:text-nest-terracotta border border-white">
+                            Directions ↗
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 7. Maple Grove Food Park & Night Market -->
+                <div class="spot-card liquid-card p-5 rounded-3xl space-y-3 flex flex-col justify-between sm:col-span-2 md:col-span-2" data-category="night dining" data-name="maple grove food park night market street food stalls outdoor">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-3xl">🍢</span>
+                            <span class="px-2.5 py-0.5 bg-purple-500/15 text-purple-700 rounded-full text-[10px] font-bold">Food Park & Night Market</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-nest-charcoal">Maple Grove Food Park & Night Market</h3>
+                        <p class="text-xs text-nest-warmGray">Vibrant outdoor market featuring local food stalls, BBQ, milk tea, live acoustic music, and festive ambient lights.</p>
+                    </div>
+                    <div class="pt-2 border-t border-black/5 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-nest-charcoal flex items-center">
+                            <i data-lucide="car" class="w-3.5 h-3.5 text-nest-terracotta mr-1"></i> ~2 mins drive / ~5 mins walk
+                        </span>
+                        <a href="https://www.google.com/maps/search/Maple+Grove+Food+Park" target="_blank" class="liquid-pill px-4 py-2 rounded-xl text-xs font-bold text-nest-charcoal hover:text-nest-terracotta border border-white">
+                            Directions ↗
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 8. 7twenty7 -->
+                <div class="spot-card liquid-card p-5 rounded-3xl space-y-3 flex flex-col justify-between" data-category="night dining" data-name="7twenty7 7207 bar lounge restobar drinks night">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-3xl">🍸</span>
+                            <span class="px-2.5 py-0.5 bg-indigo-500/15 text-indigo-700 rounded-full text-[10px] font-bold">Lounge & Dining</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-nest-charcoal">7twenty7</h3>
+                        <p class="text-xs text-nest-warmGray">Cosy restobar for evening cocktails, drinks & comfort eats.</p>
+                    </div>
+                    <div class="pt-2 border-t border-black/5 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-nest-charcoal flex items-center">
+                            <i data-lucide="car" class="w-3.5 h-3.5 text-nest-terracotta mr-1"></i> ~3 mins drive
+                        </span>
+                        <a href="https://www.google.com/maps/search/7twenty7" target="_blank" class="liquid-pill px-3 py-1.5 rounded-xl text-xs font-bold text-nest-charcoal hover:text-nest-terracotta border border-white">
+                            Directions ↗
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 9. Army Navy -->
+                <div class="spot-card liquid-card p-5 rounded-3xl space-y-3 flex flex-col justify-between" data-category="dining" data-name="army navy burgers burritos fast food steak">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-3xl">🌯</span>
+                            <span class="px-2.5 py-0.5 bg-amber-600/15 text-amber-800 rounded-full text-[10px] font-bold">Burgers & Burritos</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-nest-charcoal">Army Navy</h3>
+                        <p class="text-xs text-nest-warmGray">Famous bully burgers, steak burritos, querollica fries & iced tea.</p>
+                    </div>
+                    <div class="pt-2 border-t border-black/5 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-nest-charcoal flex items-center">
+                            <i data-lucide="car" class="w-3.5 h-3.5 text-nest-terracotta mr-1"></i> ~3 mins drive
+                        </span>
+                        <a href="https://www.google.com/maps/search/Army+Navy" target="_blank" class="liquid-pill px-3 py-1.5 rounded-xl text-xs font-bold text-nest-charcoal hover:text-nest-terracotta border border-white">
+                            Directions ↗
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= PAGE 5: CONTACT US & SOCIALS ================= -->
+        <section id="page-contact" class="page-view space-y-6">
+            <div class="liquid-card rounded-3xl p-6 sm:p-8 shadow-liquid space-y-6">
+                <div class="space-y-1 text-center sm:text-left">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-nest-terracotta/15 text-nest-terracotta text-xs font-bold border border-nest-terracotta/20 mb-2">
+                        <span>💬 We're Here to Help</span>
+                    </div>
+                    <h2 class="font-serif text-3xl font-bold text-nest-charcoal">Connect with HappiNest</h2>
+                    <p class="text-xs text-nest-warmGray max-w-lg">
+                        Have questions during your stay or want to tag us in your vacation memories? Reach out to us through any of our social channels below!
+                    </p>
+                </div>
+
+                <!-- Social Media Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    
+                    <!-- Facebook -->
+                    <a href="https://www.facebook.com/profile.php?id=61594991502636" target="_blank" class="liquid-card p-5 rounded-3xl flex flex-col justify-between space-y-4 hover:scale-[1.02] transition shadow-sm group">
+                     <div class="flex items-center justify-between">
+       			     <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold text-xl shadow-md">
+                f
+         			   </div>
+    		        <i data-lucide="external-link" class="w-5 h-5 text-nest-warmGray group-hover:text-blue-600 transition"></i>
+        </div>
+        <div>
+            <span class="text-[10px] uppercase font-bold text-nest-warmGray tracking-wider block mb-1">Facebook Page</span>
+            <h4 class="font-serif font-bold text-lg text-nest-charcoal leading-tight">
+                @HappiNest at La Cassia, Maple Grove
+            </h4>
+        </div>
+    </a>
+
+<div class="liquid-card p-5 rounded-3xl flex items-center justify-between gap-3 shadow-sm">
+        <div class="flex items-center space-x-3.5 min-w-0">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-xl shrink-0">
+                📞
+            </div>
+            <div class="min-w-0">
+                <span class="text-[10px] uppercase font-bold text-nest-warmGray tracking-wider block mb-0.5">Phone / Viber / WhatsApp</span>
+                <span class="font-bold text-base text-nest-charcoal block truncate">+63 917 123 4567</span>
+            </div>
+        </div>
+        <button onclick="copyToClipboard('+639171234567', 'Phone Number Copied!')" class="liquid-pill p-3 rounded-2xl text-nest-warmGray hover:text-emerald-600 shrink-0 border border-white" title="Copy Number">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+        </button>
+    </div>
+
+    <!-- 3. Direct Email Support Card -->
+    <div class="liquid-card p-5 rounded-3xl flex items-center justify-between gap-3 shadow-sm">
+        <div class="flex items-center space-x-3.5 min-w-0">
+            <div class="w-12 h-12 rounded-2xl bg-sky-500/15 text-sky-600 flex items-center justify-center text-xl shrink-0">
+                ✉️
+            </div>
+            <div class="min-w-0">
+                <span class="text-[10px] uppercase font-bold text-nest-warmGray tracking-wider block mb-0.5">Direct Email Support</span>
+                <span class="font-bold text-sm text-nest-charcoal block truncate">HappyNest11F@Gmail.com</span>
+            </div>
+        </div>
+        <button onclick="copyToClipboard('host@happinest.ph', 'Email Address Copied!')" class="liquid-pill p-3 rounded-2xl text-nest-warmGray hover:text-sky-600 shrink-0 border border-white" title="Copy Email">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+        </button>
+    </div>
+
+</div>
+
+    </main>
+
+    <!-- Floating Liquid Bottom Navigation Bar -->
+    <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 px-4 w-full max-w-md">
+        <div class="liquid-card rounded-full p-1.5 flex items-center justify-between shadow-2xl border border-white">
+            <button onclick="switchTab('home')" class="nav-tab liquid-pill active-nav flex-1 py-2 rounded-full text-xs font-semibold flex flex-col items-center space-y-0.5">
+                <i data-lucide="home" class="w-4 h-4"></i>
+                <span class="text-[10px]">Home</span>
+            </button>
+            <button onclick="switchTab('wifi')" class="nav-tab liquid-pill flex-1 py-2 rounded-full text-xs font-semibold flex flex-col items-center space-y-0.5 text-nest-warmGray">
+                <i data-lucide="wifi" class="w-4 h-4"></i>
+                <span class="text-[10px]">Wi-Fi</span>
+            </button>
+            <button onclick="switchTab('rules')" class="nav-tab liquid-pill flex-1 py-2 rounded-full text-xs font-semibold flex flex-col items-center space-y-0.5 text-nest-warmGray">
+                <i data-lucide="shield-check" class="w-4 h-4"></i>
+                <span class="text-[10px]">Rules</span>
+            </button>
+            <button onclick="switchTab('nearby')" class="nav-tab liquid-pill flex-1 py-2 rounded-full text-xs font-semibold flex flex-col items-center space-y-0.5 text-nest-warmGray">
+                <i data-lucide="compass" class="w-4 h-4"></i>
+                <span class="text-[10px]">Spots</span>
+            </button>
+            <button onclick="switchTab('contact')" class="nav-tab liquid-pill flex-1 py-2 rounded-full text-xs font-semibold flex flex-col items-center space-y-0.5 text-nest-warmGray">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <span class="text-[10px]">Contact</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- QR Code Modal Dialog -->
+    <div id="qrModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="liquid-card rounded-3xl p-6 sm:p-8 max-w-xs w-full text-center space-y-4 border border-white shadow-2xl relative">
+            <button onclick="closeQrModal()" class="absolute right-4 top-4 text-nest-warmGray hover:text-nest-charcoal p-1">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="space-y-1">
+                <h3 class="font-serif font-bold text-lg text-nest-charcoal">Connect to Wi-Fi</h3>
+                <p class="text-xs text-nest-warmGray">Scan with camera to connect directly</p>
+            </div>
+            
+            <!-- Replace this QR image block -->
+            <div class="bg-white p-3 rounded-2xl inline-block border border-black/5 shadow-inner my-2">
+                <!-- If you saved your image in the project folder as wifi-qr.jpg, change src below to "./wifi-qr.jpg" -->
+  		   <img id="wifiQrImg" 
+     			src="./wifi-qr.jpg" 
+     			alt="HappiNest Wi-Fi QR Code" 
+     			class="w-56 h-56 mx-auto rounded-2xl shadow-md border border-white/40 object-contain bg-white/80 p-2">
+            </div>
+
+            <div class="text-xs space-y-1 bg-white/50 p-3 rounded-2xl text-left border border-white">
+                <div class="flex justify-between">
+                    <span class="text-nest-warmGray">Network:</span>
+                    <span class="font-bold text-nest-charcoal">HappiNest</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-nest-warmGray">Password:</span>
+                    <span class="font-mono font-bold text-nest-terracotta">HappiNest@home11</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Overlay Notification -->
+    <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 liquid-card px-5 py-3 rounded-full shadow-2xl flex items-center space-x-2 border border-white">
+        <span class="text-base">✨</span>
+        <span id="toastText" class="text-xs font-bold text-nest-charcoal">Action completed!</span>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+            generateQrCode();
+        });
+
+        // Tab Navigation Controller
+        function switchTab(tabId) {
+            document.querySelectorAll('.page-view').forEach(page => page.classList.remove('active-page'));
+
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active-nav');
+                tab.classList.add('text-nest-warmGray');
+            });
+
+            const targetPage = document.getElementById(`page-${tabId}`);
+            if (targetPage) {
+                targetPage.classList.add('active-page');
+            }
+
+            const tabsOrder = ['home', 'wifi', 'rules', 'nearby', 'contact'];
+            const activeIndex = tabsOrder.indexOf(tabId);
+            if (activeIndex !== -1) {
+                const navButtons = document.querySelectorAll('.nav-tab');
+                if (navButtons[activeIndex]) {
+                    navButtons[activeIndex].classList.add('active-nav');
+                    navButtons[activeIndex].classList.remove('text-nest-warmGray');
+                }
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Wi-Fi Password Visibility Toggle
+        function togglePasswordVisibility() {
+            const passText = document.getElementById('passwordText');
+            const icon = document.getElementById('passEyeIcon');
+            if (passText.innerText === 'HappiNest@home11') {
+                passText.innerText = '••••••••••••••••';
+                icon.setAttribute('data-lucide', 'eye');
+            } else {
+                passText.innerText = 'HappiNest@home11';
+                icon.setAttribute('data-lucide', 'eye-off');
+            }
+            lucide.createIcons();
+        }
+
+        function openQrModal() {
+            document.getElementById('qrModal').classList.remove('hidden');
+        }
+
+        function closeQrModal() {
+            document.getElementById('qrModal').classList.add('hidden');
+        }
+
+        // Nearby Spots Search & Category Filter
+        function filterCategory(category) {
+            document.querySelectorAll('.category-chip').forEach(chip => {
+                chip.classList.remove('active-chip', 'active-nav');
+                chip.classList.add('text-nest-warmGray');
+            });
+            event.currentTarget.classList.add('active-chip', 'active-nav');
+            event.currentTarget.classList.remove('text-nest-warmGray');
+
+            const spots = document.querySelectorAll('.spot-card');
+            spots.forEach(spot => {
+                const cat = spot.getAttribute('data-category');
+                if (category === 'all' || cat.includes(category)) {
+                    spot.style.display = 'flex';
+                } else {
+                    spot.style.display = 'none';
+                }
+            });
+        }
+
+        function filterSpots() {
+            const query = document.getElementById('spotSearchInput').value.toLowerCase();
+            const spots = document.querySelectorAll('.spot-card');
+            spots.forEach(spot => {
+                const name = spot.getAttribute('data-name').toLowerCase();
+                if (name.includes(query)) {
+                    spot.style.display = 'flex';
+                } else {
+                    spot.style.display = 'none';
+                }
+            });
+        }
+
+        // Copy to Clipboard Utility
+        function copyToClipboard(text, message) {
+            const temp = document.createElement('input');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast(message || 'Copied to clipboard!');
+        }
+
+        // Toast Handler
+        function showToast(text) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toastText');
+            toastText.innerText = text;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // Checklist Progress
+        function updateChecklist() {
+            const checkboxes = document.querySelectorAll('.checkout-check');
+            const checkedCount = document.querySelectorAll('.checkout-check:checked').length;
+            const totalCount = checkboxes.length;
+
+            const percentage = (checkedCount / totalCount) * 100;
+            document.getElementById('progressBar').style.width = `${percentage}%`;
+            document.getElementById('progressBadge').innerText = `${checkedCount} of ${totalCount} Steps Completed`;
+
+            const banner = document.getElementById('completionBanner');
+            if (checkedCount === totalCount) {
+                banner.classList.remove('hidden');
+                if (window.confetti) {
+                    confetti({
+                        particleCount: 80,
+                        spread: 70,
+                        origin: { y: 0.7 },
+                        colors: ['#E07A5F', '#81B29A', '#F2CC8F']
+                    });
+                }
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
