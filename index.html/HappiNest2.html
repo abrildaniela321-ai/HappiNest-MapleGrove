@@ -254,81 +254,94 @@
                     <span class="text-sm font-bold text-rose-600">Strictly No Pets</span>
                 </div>
             </div>
-<!-- Comprehensive House Rules Accordion/Cards -->
-                <div class="liquid-card rounded-3xl p-6 sm:p-8 space-y-4">
-                    <h2 class="font-serif font-bold text-2xl text-nest-charcoal">🏠 House Guidelines & Rules</h2>
 
-                    <div class="space-y-3">
-                        <!-- Rule 1: CLAYGO & Odorless -->
-                        <div class="bg-white/40 border border-white/60 rounded-2xl p-4 transition hover:bg-white/60">
-                            <div class="flex items-start space-x-3">
-                                <span class="p-2 rounded-xl bg-amber-500/10 text-amber-600 text-sm">✨</span>
-                                <div>
-                                    <h3 class="font-bold text-sm text-nest-charcoal">Clean As You Go (CLAYGO) & Cleanliness</h3>
-                                    <p class="text-xs text-nest-warmGray mt-0.5">Please keep the unit clean and odorless throughout your stay. Kindly wash used dishes and dispose of waste properly.</p>
-                                </div>
-                            </div>
+            <!-- Social Banner Callout -->
+            <div class="liquid-card rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-2xl bg-nest-terracotta/20 text-nest-terracotta flex items-center justify-center text-xl shrink-0">
+                        📱
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm text-nest-charcoal">Stay Connected with HappiNest</h4>
+                        <p class="text-xs text-nest-warmGray">Follow our social channels or reach out directly anytime.</p>
+                    </div>
+                </div>
+                <button onclick="switchTab('contact')" class="liquid-pill px-5 py-2.5 rounded-full text-xs font-bold text-nest-charcoal hover:text-nest-terracotta shrink-0 border border-white">
+                    View Socials ↗
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2: WI-FI ACCESS ================= -->
+        <section id="page-wifi" class="page-view space-y-6">
+            <div class="liquid-card rounded-3xl p-6 sm:p-8 shadow-liquid space-y-6">
+                <div class="flex items-center justify-between border-b border-black/5 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-2xl bg-nest-terracotta/15 text-nest-terracotta flex items-center justify-center text-2xl shrink-0">
+                            📶
                         </div>
-
-                        <!-- Rule 2: Food Storage -->
-                        <div class="bg-white/40 border border-white/60 rounded-2xl p-4 transition hover:bg-white/60">
-                            <div class="flex items-start space-x-3">
-                                <span class="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 text-sm">🧊</span>
-                                <div>
-                                    <h3 class="font-bold text-sm text-nest-charcoal">Proper Food Storage</h3>
-                                    <p class="text-xs text-nest-warmGray mt-0.5">Avoid leaving food or leftovers unsealed outside the refrigerator to prevent pests and maintain freshness.</p>
-                                </div>
-                            </div>
+                        <div>
+                            <h2 class="font-serif font-bold text-2xl text-nest-charcoal">High-Speed Wi-Fi</h2>
+                            <p class="text-xs text-nest-warmGray">Tap any field to copy instantly to clipboard</p>
                         </div>
+                    </div>
+                    <button onclick="openQrModal()" class="liquid-pill px-3.5 py-2 rounded-full text-xs font-bold text-nest-charcoal flex items-center space-x-2 border border-white">
+                        <i data-lucide="qr-code" class="w-4 h-4 text-nest-terracotta"></i>
+                        <span>Show QR Code</span>
+                    </button>
+                </div>
 
-                        <!-- Rule 3: No Pets -->
-                        <div class="bg-white/40 border border-white/60 rounded-2xl p-4 transition hover:bg-white/60">
-                            <div class="flex items-start space-x-3">
-                                <span class="p-2 rounded-xl bg-rose-500/10 text-rose-600 text-sm">🐾</span>
-                                <div>
-                                    <h3 class="font-bold text-sm text-nest-charcoal">Strictly No Pets</h3>
-                                    <p class="text-xs text-nest-warmGray mt-0.5">Pets are strictly prohibited inside the unit and building to maintain a clean and hypoallergenic space.</p>
-                                </div>
-                            </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Network Name -->
+                    <div class="bg-white/70 rounded-2xl p-5 flex items-center justify-between border border-white shadow-sm">
+                        <div>
+                            <span class="text-[10px] font-bold text-nest-warmGray uppercase tracking-wider block mb-0.5">Network Name</span>
+                            <span class="font-serif font-bold text-2xl text-nest-charcoal">HappiNest</span>
                         </div>
+                        <button onclick="copyToClipboard('HappiNest', 'Network Name Copied!')" class="liquid-pill p-3 rounded-xl text-nest-warmGray hover:text-nest-terracotta" title="Copy Network">
+                            <i data-lucide="copy" class="w-5 h-5"></i>
+                        </button>
+                    </div>
 
-                        <!-- Rule 4: No Smoking -->
-                        <div class="bg-white/40 border border-white/60 rounded-2xl p-4 transition hover:bg-white/60">
-                            <div class="flex items-start space-x-3">
-                                <span class="p-2 rounded-xl bg-rose-500/10 text-rose-600 text-sm">🚭</span>
-                                <div>
-                                    <h3 class="font-bold text-sm text-nest-charcoal">Strictly No Smoking</h3>
-                                    <p class="text-xs text-nest-warmGray mt-0.5">No smoking or vaping inside the unit and throughout the entire building premises.</p>
-                                </div>
-                            </div>
+                    <!-- Password -->
+                    <div class="bg-white/70 rounded-2xl p-5 flex items-center justify-between border border-white shadow-sm">
+                        <div>
+                            <span class="text-[10px] font-bold text-nest-warmGray uppercase tracking-wider block mb-0.5">Password</span>
+                            <span id="passwordText" class="font-mono font-bold text-xl text-nest-terracotta">HappiNest@home11</span>
                         </div>
-
-                        <!-- Rule 5: Keys -->
-                        <div class="bg-white/40 border border-white/60 rounded-2xl p-4 transition hover:bg-white/60">
-                            <div class="flex items-start space-x-3">
-                                <span class="p-2 rounded-xl bg-amber-500/10 text-amber-600 text-sm">🔑</span>
-                                <div>
-                                    <h3 class="font-bold text-sm text-nest-charcoal">Key Replacement Policy</h3>
-                                    <p class="text-xs text-nest-warmGray mt-0.5">Please take care of the unit keys. A lost key will incur an extra replacement charge upon check-out.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Rule 6: Energy -->
-                        <div class="bg-white/40 border border-white/60 rounded-2xl p-4 transition hover:bg-white/60">
-                            <div class="flex items-start space-x-3">
-                                <span class="p-2 rounded-xl bg-blue-500/10 text-blue-600 text-sm">⚡</span>
-                                <div>
-                                    <h3 class="font-bold text-sm text-nest-charcoal">Energy Saving</h3>
-                                    <p class="text-xs text-nest-warmGray mt-0.5">Please switch off air conditioning units, lights, and electrical appliances whenever you leave the unit.</p>
-                                </div>
-                            </div>
+                        <div class="flex items-center space-x-1.5">
+                            <button onclick="togglePasswordVisibility()" class="liquid-pill p-2.5 rounded-xl text-nest-warmGray hover:text-nest-charcoal" title="Toggle Show/Hide">
+                                <i id="passEyeIcon" data-lucide="eye-off" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="copyToClipboard('HappiNest@home11', 'Password Copied!')" class="liquid-pill px-3.5 py-2 rounded-xl text-xs font-bold text-nest-charcoal border border-nest-terracotta/30 hover:bg-nest-terracotta hover:text-white transition">
+                                Copy
+                            </button>
                         </div>
                     </div>
                 </div>
-            </section>
-                            
-           <!-- PAGE 2: AMENITIES & FEATURES -->
+
+                <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-200/50 text-xs text-nest-warmGray flex items-center space-x-3">
+                    <span class="text-lg">💡</span>
+                    <span>Having trouble connecting? Try restarting your phone's Wi-Fi or scan the QR code above directly with your smartphone camera.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 3: HOUSE RULES & CHECKOUT ================= -->
+        <section id="page-rules" class="page-view space-y-6">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h2 class="font-serif text-3xl font-bold text-nest-charcoal">House Rules & Care</h2>
+                    <p class="text-xs text-nest-warmGray mt-0.5">Please review our rules to help us keep HappiNest pleasant for everyone.</p>
+                </div>
+                <span class="px-3.5 py-1.5 bg-rose-500/15 text-rose-600 rounded-full text-xs font-bold border border-rose-500/30 flex items-center space-x-1.5 self-start sm:self-auto">
+                    <i data-lucide="ban" class="w-4 h-4"></i>
+                    <span>Strictly NO PETS Allowed</span>
+                </span>
+            </div>
+
+            <!-- PAGE 2: AMENITIES & FEATURES -->
             <section id="page-amenities" class="page-view space-y-6">
                 <!-- Unit Comforts -->
                 <div class="liquid-card rounded-3xl p-6 sm:p-8 space-y-4">
@@ -436,191 +449,6 @@
                     </div>
                 </div>
             </section>
-
-            <!-- Social Banner Callout -->
-            <div class="liquid-card rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div class="flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-2xl bg-nest-terracotta/20 text-nest-terracotta flex items-center justify-center text-xl shrink-0">
-                        📱
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-sm text-nest-charcoal">Stay Connected with HappiNest</h4>
-                        <p class="text-xs text-nest-warmGray">Follow our social channels or reach out directly anytime.</p>
-                    </div>
-                </div>
-                <button onclick="switchTab('contact')" class="liquid-pill px-5 py-2.5 rounded-full text-xs font-bold text-nest-charcoal hover:text-nest-terracotta shrink-0 border border-white">
-                    View Socials ↗
-                </button>
-            </div>
-        </section>
-
-        <!-- ================= PAGE 2: WI-FI ACCESS ================= -->
-        <section id="page-wifi" class="page-view space-y-6">
-            <div class="liquid-card rounded-3xl p-6 sm:p-8 shadow-liquid space-y-6">
-                <div class="flex items-center justify-between border-b border-black/5 pb-4">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-12 h-12 rounded-2xl bg-nest-terracotta/15 text-nest-terracotta flex items-center justify-center text-2xl shrink-0">
-                            📶
-                        </div>
-                        <div>
-                            <h2 class="font-serif font-bold text-2xl text-nest-charcoal">High-Speed Wi-Fi</h2>
-                            <p class="text-xs text-nest-warmGray">Tap any field to copy instantly to clipboard</p>
-                        </div>
-                    </div>
-                    <button onclick="openQrModal()" class="liquid-pill px-3.5 py-2 rounded-full text-xs font-bold text-nest-charcoal flex items-center space-x-2 border border-white">
-                        <i data-lucide="qr-code" class="w-4 h-4 text-nest-terracotta"></i>
-                        <span>Show QR Code</span>
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- Network Name -->
-                    <div class="bg-white/70 rounded-2xl p-5 flex items-center justify-between border border-white shadow-sm">
-                        <div>
-                            <span class="text-[10px] font-bold text-nest-warmGray uppercase tracking-wider block mb-0.5">Network Name</span>
-                            <span class="font-serif font-bold text-2xl text-nest-charcoal">HappiNest</span>
-                        </div>
-                        <button onclick="copyToClipboard('HappiNest', 'Network Name Copied!')" class="liquid-pill p-3 rounded-xl text-nest-warmGray hover:text-nest-terracotta" title="Copy Network">
-                            <i data-lucide="copy" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-
-                    <!-- Password -->
-                    <div class="bg-white/70 rounded-2xl p-5 flex items-center justify-between border border-white shadow-sm">
-                        <div>
-                            <span class="text-[10px] font-bold text-nest-warmGray uppercase tracking-wider block mb-0.5">Password</span>
-                            <span id="passwordText" class="font-mono font-bold text-xl text-nest-terracotta">HappiNest@home11</span>
-                        </div>
-                        <div class="flex items-center space-x-1.5">
-                            <button onclick="togglePasswordVisibility()" class="liquid-pill p-2.5 rounded-xl text-nest-warmGray hover:text-nest-charcoal" title="Toggle Show/Hide">
-                                <i id="passEyeIcon" data-lucide="eye-off" class="w-4 h-4"></i>
-                            </button>
-                            <button onclick="copyToClipboard('HappiNest@home11', 'Password Copied!')" class="liquid-pill px-3.5 py-2 rounded-xl text-xs font-bold text-nest-charcoal border border-nest-terracotta/30 hover:bg-nest-terracotta hover:text-white transition">
-                                Copy
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-200/50 text-xs text-nest-warmGray flex items-center space-x-3">
-                    <span class="text-lg">💡</span>
-                    <span>Having trouble connecting? Try restarting your phone's Wi-Fi or scan the QR code above directly with your smartphone camera.</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= PAGE 3: HOUSE RULES & CHECKOUT ================= -->
-        <section id="page-rules" class="page-view space-y-6">
-            
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div>
-                    <h2 class="font-serif text-3xl font-bold text-nest-charcoal">House Rules & Care</h2>
-                    <p class="text-xs text-nest-warmGray mt-0.5">Please review our rules to help us keep HappiNest pleasant for everyone.</p>
-                </div>
-                <span class="px-3.5 py-1.5 bg-rose-500/15 text-rose-600 rounded-full text-xs font-bold border border-rose-500/30 flex items-center space-x-1.5 self-start sm:self-auto">
-                    <i data-lucide="ban" class="w-4 h-4"></i>
-                    <span>Strictly NO PETS Allowed</span>
-                </span>
-            </div>
-
-            <!-- Rules Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                <!-- Rule 1: No Pets -->
-                <div class="liquid-card rounded-3xl p-5 space-y-3 border-rose-500/30 bg-rose-50/20">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-2xl bg-rose-500/15 text-rose-600 flex items-center justify-center text-xl shrink-0">
-                            🐾
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-sm text-nest-charcoal">Strictly No Pets Allowed</h3>
-                            <p class="text-xs text-rose-600/80 font-medium">Allergen-Free Environment</p>
-                        </div>
-                    </div>
-                    <p class="text-xs text-nest-warmGray leading-relaxed bg-white/50 p-3 rounded-2xl">
-                        To keep the space hypoallergenic and clean for all incoming guests, pets are strictly prohibited inside the unit.
-                    </p>
-                </div>
-
-                <!-- Rule 2: Check-In/Out -->
-                <div class="liquid-card rounded-3xl p-5 space-y-3">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-2xl bg-nest-terracotta/15 text-nest-terracotta flex items-center justify-center text-xl shrink-0">
-                            ⏰
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-sm text-nest-charcoal">Check-In & Check-Out</h3>
-                            <p class="text-xs text-nest-warmGray">Check-in 3 PM | Check-out 2 PM</p>
-                        </div>
-                    </div>
-                    <p class="text-xs text-nest-warmGray leading-relaxed bg-white/50 p-3 rounded-2xl">
-                        Check-in is at 3:00 PM. Check-out is strictly at 2:00 PM so our cleaning team can prepare for the next guests.
-                    </p>
-                </div>
-
-                <!-- Rule 3: Quiet Hours -->
-                <div class="liquid-card rounded-3xl p-5 space-y-3">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-2xl bg-indigo-500/15 text-indigo-500 flex items-center justify-center text-xl shrink-0">
-                            🌙
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-sm text-nest-charcoal">Quiet Hours</h3>
-                            <p class="text-xs text-nest-warmGray">10:00 PM – 8:00 AM</p>
-                        </div>
-                    </div>
-                    <p class="text-xs text-nest-warmGray leading-relaxed bg-white/50 p-3 rounded-2xl">
-                        Please keep noise levels low during night hours out of respect for neighbors.
-                    </p>
-                </div>
-
-                <!-- Rule 4: No Smoking & No Parties -->
-                <div class="liquid-card rounded-3xl p-5 space-y-3">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-600 flex items-center justify-center text-xl shrink-0">
-                            🚭
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-sm text-nest-charcoal">No Smoking & No Parties</h3>
-                            <p class="text-xs text-nest-warmGray">Indoor Prohibited</p>
-                        </div>
-                    </div>
-                    <p class="text-xs text-nest-warmGray leading-relaxed bg-white/50 p-3 rounded-2xl">
-                        Smoking/vaping inside and large noisy parties are strictly prohibited on the property.
-                    </p>
-                </div>
-
-                <!-- Rule 5: Cleaning Policy -->
-                <div class="liquid-card rounded-3xl p-5 space-y-3">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-2xl bg-nest-sage/20 text-nest-sage flex items-center justify-center text-xl shrink-0">
-                            ♻️
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-sm text-nest-charcoal">Cleaning Policy</h3>
-                            <p class="text-xs text-nest-warmGray">Keep the area clean</p>
-                        </div>
-                    </div>
-                    <p class="text-xs text-nest-warmGray leading-relaxed bg-white/50 p-3 rounded-2xl">
-                        Please clean as you go (claygo) and avoid leaving leftover consumables outside the fridge
-                    </p>
-                </div>
-
-                <!-- Rule 6: Energy & Kitchen Use -->
-                <div class="liquid-card rounded-3xl p-5 space-y-3">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-2xl bg-amber-400/20 text-amber-600 flex items-center justify-center text-xl shrink-0">
-                            🍳
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-sm text-nest-charcoal">Kitchen & Utilities</h3>
-                            <p class="text-xs text-nest-warmGray">Turn off AC when going out</p>
-                        </div>
-                    </div>
-                    <p class="text-xs text-nest-warmGray leading-relaxed bg-white/50 p-3 rounded-2xl">
-                        You are welcome to use cookware! Please wash dishes after use and switch off AC units when stepping out.
-                    </p>
-                </div>
 
             </div>
 
