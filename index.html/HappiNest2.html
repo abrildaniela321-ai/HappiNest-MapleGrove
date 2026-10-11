@@ -810,7 +810,7 @@
     </nav>
 
     <!-- QR Code Modal Dialog -->
-    <div id="qrModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-md hidden flex items-center justify-center p-4">
+     <div id="qrModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-md hidden flex items-center justify-center p-4">
         <div class="liquid-card rounded-3xl p-6 sm:p-8 max-w-xs w-full text-center space-y-4 border border-white shadow-2xl relative">
             <button onclick="closeQrModal()" class="absolute right-4 top-4 text-nest-warmGray hover:text-nest-charcoal p-1">
                 <i data-lucide="x" class="w-5 h-5"></i>
@@ -819,16 +819,17 @@
                 <h3 class="font-serif font-bold text-lg text-nest-charcoal">Connect to Wi-Fi</h3>
                 <p class="text-xs text-nest-warmGray">Scan with camera to connect directly</p>
             </div>
+
             
             <!-- Replace this QR image block -->
-           <div id="qrModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="liquid-card rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center space-y-4 relative border border-white/60">
-            <button onclick="closeQrModal()" class="absolute top-4 right-4 liquid-pill p-2 rounded-full text-nest-warmGray hover:text-nest-charcoal">
-                <i data-lucide="x" class="w-5 h-5"></i>
-            </button>
-            <h3 class="font-serif font-bold text-xl text-nest-charcoal">Connect to Wi-Fi</h3>
-            <p class="text-xs text-nest-warmGray">Scan with camera to connect directly</p>
-            
+          <div class="bg-white p-3 rounded-2xl inline-block border border-black/5 shadow-inner my-2">
+                <!-- If you saved your image in the project folder as wifi-qr.jpg, change src below to "./wifi-qr.jpg" -->
+  		   <img id="wifiQrImg" 
+     			src="./wifi-qr.jpg" 
+     			alt="HappiNest Wi-Fi QR Code" 
+     			class="w-56 h-56 mx-auto rounded-2xl shadow-md border border-white/40 object-contain bg-white/80 p-2">
+            </div>
+
             <div class="p-3 bg-white rounded-2xl border border-black/5 inline-block mx-auto shadow-inner">
                 <img id="wifiQrImg" 
                      src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=WIFI:S:HappiNest;T:WPA;P:HappiNest@home11;;" 
