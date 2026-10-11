@@ -204,6 +204,9 @@
                             <span class="text-xs font-bold block text-nest-charcoal">Wi-Fi Info</span>
                             <span class="text-[10px] text-nest-warmGray">Fast & Free</span>
                         </button>
+                        <button onclick="switchTab('amenities')" id="tab-amenities" class="tab-btn flex-1 py-2.5 px-3 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition flex items-center justify-center space-x-1.5 text-nest-charcoal whitespace-nowrap">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                <span>Amenities</span>
                         <button onclick="switchTab('rules')" class="liquid-card p-3.5 rounded-2xl text-left hover:border-nest-sage transition group">
                             <i data-lucide="shield-check" class="w-5 h-5 text-nest-sage mb-1 group-hover:scale-110 transition-transform"></i>
                             <span class="text-xs font-bold block text-nest-charcoal">House Rules</span>
@@ -213,6 +216,9 @@
                             <i data-lucide="map-pin" class="w-5 h-5 text-amber-500 mb-1 group-hover:scale-110 transition-transform"></i>
                             <span class="text-xs font-bold block text-nest-charcoal">Nearby Spots</span>
                             <span class="text-[10px] text-nest-warmGray">Maple Grove Eats</span>
+                            <button onclick="switchTab('checkout')" id="tab-checkout" class="tab-btn flex-1 py-2.5 px-3 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition flex items-center justify-center space-x-1.5 text-nest-charcoal whitespace-nowrap">
+                <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                <span>Check-Out</span>
                         </button>
                         <button onclick="switchTab('contact')" class="liquid-card p-3.5 rounded-2xl text-left hover:border-sky-400 transition group">
                             <i data-lucide="message-circle" class="w-5 h-5 text-sky-500 mb-1 group-hover:scale-110 transition-transform"></i>
@@ -228,13 +234,15 @@
                 <div class="liquid-card p-4 rounded-2xl text-center space-y-1">
                     <i data-lucide="clock" class="w-4 h-4 text-nest-terracotta mx-auto"></i>
                     <span class="text-[10px] uppercase font-bold text-nest-warmGray block">Check-in</span>
-                    <span class="text-sm font-bold text-nest-charcoal">3:00 PM</span>
+                    <span class="text-sm font-bold text-nest-charcoal">2:00pm</span>
                 </div>
                 <div class="liquid-card p-4 rounded-2xl text-center space-y-1">
                     <i data-lucide="log-out" class="w-4 h-4 text-nest-terracotta mx-auto"></i>
                     <span class="text-[10px] uppercase font-bold text-nest-warmGray block">Check-out</span>
-                    <span class="text-sm font-bold text-nest-charcoal">Strictly 2:00 PM</span>
+                    <span class="text-sm font-bold text-nest-charcoal">Strictly 12:00 PM</span>
                 </div>
+
+                
                 <div class="liquid-card p-4 rounded-2xl text-center space-y-1">
                     <i data-lucide="moon" class="w-4 h-4 text-indigo-500 mx-auto"></i>
                     <span class="text-[10px] uppercase font-bold text-nest-warmGray block">Quiet Hours</span>
@@ -246,6 +254,188 @@
                     <span class="text-sm font-bold text-rose-600">Strictly No Pets</span>
                 </div>
             </div>
+<!-- Comprehensive House Rules Accordion/Cards -->
+                <div class="liquid-card rounded-3xl p-6 sm:p-8 space-y-4">
+                    <h2 class="font-serif font-bold text-2xl text-nest-charcoal">🏠 House Guidelines & Rules</h2>
+
+                    <div class="space-y-3">
+                        <!-- Rule 1: CLAYGO & Odorless -->
+                        <div class="bg-white/40 border border-white/60 rounded-2xl p-4 transition hover:bg-white/60">
+                            <div class="flex items-start space-x-3">
+                                <span class="p-2 rounded-xl bg-amber-500/10 text-amber-600 text-sm">✨</span>
+                                <div>
+                                    <h3 class="font-bold text-sm text-nest-charcoal">Clean As You Go (CLAYGO) & Cleanliness</h3>
+                                    <p class="text-xs text-nest-warmGray mt-0.5">Please keep the unit clean and odorless throughout your stay. Kindly wash used dishes and dispose of waste properly.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rule 2: Food Storage -->
+                        <div class="bg-white/40 border border-white/60 rounded-2xl p-4 transition hover:bg-white/60">
+                            <div class="flex items-start space-x-3">
+                                <span class="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 text-sm">🧊</span>
+                                <div>
+                                    <h3 class="font-bold text-sm text-nest-charcoal">Proper Food Storage</h3>
+                                    <p class="text-xs text-nest-warmGray mt-0.5">Avoid leaving food or leftovers unsealed outside the refrigerator to prevent pests and maintain freshness.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rule 3: No Pets -->
+                        <div class="bg-white/40 border border-white/60 rounded-2xl p-4 transition hover:bg-white/60">
+                            <div class="flex items-start space-x-3">
+                                <span class="p-2 rounded-xl bg-rose-500/10 text-rose-600 text-sm">🐾</span>
+                                <div>
+                                    <h3 class="font-bold text-sm text-nest-charcoal">Strictly No Pets</h3>
+                                    <p class="text-xs text-nest-warmGray mt-0.5">Pets are strictly prohibited inside the unit and building to maintain a clean and hypoallergenic space.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rule 4: No Smoking -->
+                        <div class="bg-white/40 border border-white/60 rounded-2xl p-4 transition hover:bg-white/60">
+                            <div class="flex items-start space-x-3">
+                                <span class="p-2 rounded-xl bg-rose-500/10 text-rose-600 text-sm">🚭</span>
+                                <div>
+                                    <h3 class="font-bold text-sm text-nest-charcoal">Strictly No Smoking</h3>
+                                    <p class="text-xs text-nest-warmGray mt-0.5">No smoking or vaping inside the unit and throughout the entire building premises.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rule 5: Keys -->
+                        <div class="bg-white/40 border border-white/60 rounded-2xl p-4 transition hover:bg-white/60">
+                            <div class="flex items-start space-x-3">
+                                <span class="p-2 rounded-xl bg-amber-500/10 text-amber-600 text-sm">🔑</span>
+                                <div>
+                                    <h3 class="font-bold text-sm text-nest-charcoal">Key Replacement Policy</h3>
+                                    <p class="text-xs text-nest-warmGray mt-0.5">Please take care of the unit keys. A lost key will incur an extra replacement charge upon check-out.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rule 6: Energy -->
+                        <div class="bg-white/40 border border-white/60 rounded-2xl p-4 transition hover:bg-white/60">
+                            <div class="flex items-start space-x-3">
+                                <span class="p-2 rounded-xl bg-blue-500/10 text-blue-600 text-sm">⚡</span>
+                                <div>
+                                    <h3 class="font-bold text-sm text-nest-charcoal">Energy Saving</h3>
+                                    <p class="text-xs text-nest-warmGray mt-0.5">Please switch off air conditioning units, lights, and electrical appliances whenever you leave the unit.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+                            
+           <!-- PAGE 2: AMENITIES & FEATURES -->
+            <section id="page-amenities" class="page-view space-y-6">
+                <!-- Unit Comforts -->
+                <div class="liquid-card rounded-3xl p-6 sm:p-8 space-y-4">
+                    <h2 class="font-serif font-bold text-2xl text-nest-charcoal flex items-center space-x-2">
+                        <span>✨ Unit Features & Comforts</span>
+                    </h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="bg-white/50 p-4 rounded-2xl border border-white/80 flex items-center space-x-3">
+                            <span class="text-2xl p-2 rounded-xl bg-indigo-500/10">❄️</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-nest-charcoal">Fully Air-Conditioned</h4>
+                                <p class="text-[11px] text-nest-warmGray">Cool and comfortable space</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/50 p-4 rounded-2xl border border-white/80 flex items-center space-x-3">
+                            <span class="text-2xl p-2 rounded-xl bg-amber-500/10">🛏️</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-nest-charcoal">Double Sized Bed</h4>
+                                <p class="text-[11px] text-nest-warmGray">Plush & cozy sleeping space</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/50 p-4 rounded-2xl border border-white/80 flex items-center space-x-3">
+                            <span class="text-2xl p-2 rounded-xl bg-sky-500/10">🚿</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-nest-charcoal">Private Bathroom</h4>
+                                <p class="text-[11px] text-nest-warmGray">With Hot & Cold shower</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/50 p-4 rounded-2xl border border-white/80 flex items-center space-x-3">
+                            <span class="text-2xl p-2 rounded-xl bg-emerald-500/10">🍳</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-nest-charcoal">Kitchen Equipment</h4>
+                                <p class="text-[11px] text-nest-warmGray">Essential appliances & utensils</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/50 p-4 rounded-2xl border border-white/80 flex items-center space-x-3">
+                            <span class="text-2xl p-2 rounded-xl bg-rose-500/10">🏨</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-nest-charcoal">Hotel-Inspired Interior</h4>
+                                <p class="text-[11px] text-nest-warmGray">Elegant aesthetic design</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/50 p-4 rounded-2xl border border-white/80 flex items-center space-x-3">
+                            <span class="text-2xl p-2 rounded-xl bg-purple-500/10">💡</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-nest-charcoal">Ambient & Mood Lighting</h4>
+                                <p class="text-[11px] text-nest-warmGray">Warm lighting options</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/50 p-4 rounded-2xl border border-white/80 flex items-center space-x-3 sm:col-span-2">
+                            <span class="text-2xl p-2 rounded-xl bg-nest-terracotta/10">🎲</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-nest-charcoal">Board Games Included</h4>
+                                <p class="text-[11px] text-nest-warmGray">Fun indoor entertainment for guests</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Building Amenities -->
+                <div class="liquid-card rounded-3xl p-6 sm:p-8 space-y-4">
+                    <h2 class="font-serif font-bold text-2xl text-nest-charcoal flex items-center space-x-2">
+                        <span>🏢 Building Amenities</span>
+                    </h2>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="bg-white/50 p-4 rounded-2xl border border-white/80 flex items-center space-x-3">
+                            <span class="text-2xl p-2 rounded-xl bg-blue-500/10">🏊‍♂️</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-nest-charcoal">Swimming Pool Access</h4>
+                                <p class="text-[11px] text-nest-warmGray">₱200/adult • 8:00 AM – 10:00 PM</p>
+                                <span class="text-[10px] text-rose-600 font-bold block mt-0.5">⚠️ Proper swimwear required</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/50 p-4 rounded-2xl border border-white/80 flex items-center space-x-3">
+                            <span class="text-2xl p-2 rounded-xl bg-orange-500/10">🏋️‍♀️</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-nest-charcoal">Gym & Fitness Center</h4>
+                                <p class="text-[11px] text-nest-warmGray">Stay active during stay</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/50 p-4 rounded-2xl border border-white/80 flex items-center space-x-3">
+                            <span class="text-2xl p-2 rounded-xl bg-amber-500/10">🛝</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-nest-charcoal">Daycare & 24/7 Playground</h4>
+                                <p class="text-[11px] text-nest-warmGray">Kid-friendly recreational area</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/50 p-4 rounded-2xl border border-white/80 flex items-center space-x-3">
+                            <span class="text-2xl p-2 rounded-xl bg-emerald-500/10">🌿</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-nest-charcoal">Roof-Sky Garden</h4>
+                                <p class="text-[11px] text-nest-warmGray">Panoramic sunset views & relax zone</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <!-- Social Banner Callout -->
             <div class="liquid-card rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -400,19 +590,19 @@
                     </p>
                 </div>
 
-                <!-- Rule 5: Shoes Off Policy -->
+                <!-- Rule 5: Cleaning Policy -->
                 <div class="liquid-card rounded-3xl p-5 space-y-3">
                     <div class="flex items-center space-x-3">
                         <div class="w-10 h-10 rounded-2xl bg-nest-sage/20 text-nest-sage flex items-center justify-center text-xl shrink-0">
-                            👟
+                            ♻️
                         </div>
                         <div>
-                            <h3 class="font-bold text-sm text-nest-charcoal">Shoes Off Policy</h3>
-                            <p class="text-xs text-nest-warmGray">Keep Floors Clean</p>
+                            <h3 class="font-bold text-sm text-nest-charcoal">Cleaning Policy</h3>
+                            <p class="text-xs text-nest-warmGray">Keep the area clean</p>
                         </div>
                     </div>
                     <p class="text-xs text-nest-warmGray leading-relaxed bg-white/50 p-3 rounded-2xl">
-                        Please leave outdoor footwear at the entry shoe area upon entering HappiNest.
+                        Please clean as you go (claygo) and avoid leaving leftover consumables outside the fridge
                     </p>
                 </div>
 
